@@ -1,0 +1,149 @@
+/*--- MAINPAGE SECTION ---*/
+
+.mainpage {
+    min-height: calc(100vh - 70px);
+    background-color: #451518;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7%;
+    padding: 60px 10%;
+}
+
+
+/* --- MAINPAGE IMAGE ---*/
+
+.mainpage-image {
+    position: relative;
+    width: 480px;
+    height: 365px;
+    flex-shrink: 0;
+    border: 4px solid #5e2030;
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+.mainpage-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+
+/* DARK OVERLAY ON IMAGE */
+
+.mainpage-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.25);
+    pointer-events:none;
+}
+
+
+/* IMAGE LABEL */
+
+.image-label {
+    position: absolute;
+    bottom: 20px;
+    left: 22px;
+    z-index: 2;
+    color: white;
+    font-family: "Montserrat", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.image-label span {
+    width: 10px;
+    height: 10px;
+    background-color: #00c896;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+
+/*--- MAINPAGE TEXT ---*/
+
+.mainpage-content {
+    max-width: 650px;
+}
+
+.mainpage-content h1 {
+    font-family: "Playfair Display", serif;
+    color: white;
+    font-size: 68px;
+    font-style: italic;
+    line-height: 1.05;
+    margin-bottom: 25px;
+}
+
+.mainpage-content h1 span {
+    color: #e9bfc3;
+}
+
+
+/*--- DESCRIPTION ---*/
+
+.mainpage-content p {
+    font-family: "Montserrat", sans-serif;
+    color: #f4dddd;
+    font-size: 18px;
+    line-height: 1.65;
+    margin-bottom: 38px;
+}
+
+
+/* --- BUTTONS ---*/
+
+.mainpage-buttons {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+
+/* DONATE BUTTON */
+
+.donate-btn {
+    display: inline-block;
+    padding: 20px 40px;
+    background-color: #fff5f5;
+    color: #35090d;
+    border-radius: 40px;
+    font-family: "Montserrat", sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.donate-btn:hover {
+    background-color: #e8d7d7;
+    transform: translateY(-2px);
+}
+
+
+/* --- REQUEST BUTTON --- */
+
+.request-btn {
+    display: inline-block;
+    padding: 20px 40px;
+    background-color: transparent;
+    color: white;
+    border: 1px solid #8d1e3b;
+    border-radius: 40px;
+    font-family: "Montserrat", sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.request-btn:hover {
+    background-color: #5a151d;
+}

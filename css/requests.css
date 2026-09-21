@@ -1,0 +1,436 @@
+/*--- PATIENTS IN NEED SECTION ---*/
+
+.patients-section {
+    width: 100%;
+    background-color: #200507;
+    padding: 40px 0 30px;
+}
+
+
+/*--- MAIN CONTENT WIDTH ---*/
+
+.patients-top,
+.request-toolbar {
+    width: calc(100% - 120px);
+    max-width: 1320px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+/*--- TOP AREA ---*/
+
+.patients-top {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 40px;
+    margin-bottom: 55px;
+}
+
+
+/*--- TITLE ---*/
+
+.patients-title h1 {
+    margin: 0 0 12px;
+    font-family: "Montserrat", sans-serif;
+    color: #ffe9eb;
+    font-size: 72px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.patients-title p {
+    margin: 0;
+    font-family: "Montserrat", sans-serif;
+    color: #e3c9cc;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+
+/*--- TOP CONTROLS ---*/
+
+.request-controls {
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    flex-shrink: 0;
+}
+
+
+/*--- BLOOD TYPE FILTER ---*/
+
+.blood-filter {
+    height: 48px;
+
+    min-width: 158px;
+
+    padding: 0 15px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    background-color: #4a050d;
+
+    border: 1px solid #a90b2e;
+
+    border-radius: 25px;
+
+    font-family: "Montserrat", sans-serif;
+
+    white-space: nowrap;
+}
+
+.blood-filter span {
+    color: #f0b9c0;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+
+/* SELECT */
+
+.blood-filter select {
+    width: 42px;
+
+    padding: 0;
+
+    background: transparent;
+
+    border: none;
+
+    outline: none;
+
+    appearance: none;
+
+    color: white;
+
+    font-family: "Montserrat", sans-serif;
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.blood-filter select option {
+    background-color: #2b080b;
+
+    color: white;
+}
+
+
+/* FILTER ICON */
+
+.blood-filter i {
+    margin-left: auto;
+
+    color: #e8afb7;
+
+    font-size: 16px;
+}
+
+
+/*--- SUBMIT URGENT REQUEST BUTTON ---*/
+
+.submit-request-btn {
+    height: 48px;
+
+    padding: 0 25px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    border: none;
+
+    border-radius: 25px;
+
+    background-color: #d5003b;
+
+    color: white;
+
+    font-family: "Montserrat", sans-serif;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.submit-request-btn:hover {
+    background-color: #ed174f;
+
+    transform: translateY(-1px);
+}
+
+.submit-request-btn i {
+    font-size: 17px;
+}
+
+
+/*--- SEARCH + URGENCY CONTAINER ---*/
+
+.request-toolbar {
+    min-height: 88px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    background-color: #1c1919;
+    border: 1px solid #3a3434;
+    border-radius: 20px;
+    box-sizing: border-box;
+}
+
+
+/* =========================================
+   SEARCH BOX
+========================================= */
+
+.search-box {
+    width: 400px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 15px;
+    background-color: #282424;
+    border: 1px solid #4a4444;
+    border-radius: 14px;
+    box-sizing: border-box;
+}
+
+.search-box i {
+    color: #a9a1a1;
+    font-size: 17px;
+    flex-shrink: 0;
+}
+
+.search-box input {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: white;
+    font-family: "Montserrat", sans-serif;
+    font-size: 15px;
+}
+
+.search-box input::placeholder {
+    color: #918989;
+}
+
+
+/*--- URGENCY FILTER ---*/
+
+.urgency-filter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.urgency-label {
+    margin-right: 2px;
+    color: #d7cccc;
+    font-family: "Montserrat", sans-serif;
+    font-size: 14px;
+}
+
+
+/*--- URGENCY BUTTONS ---*/
+
+.urgency-btn {
+    height: 30px;
+    padding: 0 17px;
+    border: none;
+    border-radius: 20px;
+    background-color: #302d2d;
+    color: #ddd5d5;
+    font-family: "Montserrat", sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.urgency-btn:hover {
+    background-color: #423e3e;
+}
+
+.urgency-btn.active {
+    background-color: #d5003b;
+    color: white;
+}
+
+/* =========================================
+   REQUEST CARDS
+========================================= */
+
+.requests-section {
+    width: 100%;
+    background-color: #200507;
+    padding: 40px 0 80px;
+}
+
+
+/* 3 COLUMN GRID */
+
+.requests-grid {
+    width: calc(100% - 120px);
+    max-width: 1320px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+
+/* CARD */
+
+.requests-card {
+    background-color: #52090e;
+    border: 1px solid #3a3434;
+    border-radius: 20px;
+    padding: 25px;
+    min-height: 260px;
+    display: flex;
+    flex-direction: column;
+    transition: 0.3s ease;
+}
+
+
+/* CARD HOVER */
+
+.requests-card:hover {
+    border-color: #7a1b2d;
+    transform: translateY(-4px);
+}
+
+
+/* CARD HEADER */
+
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+
+/* BLOOD TYPE */
+
+.blood-types {
+    width: 55px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    background-color: #fcd5d8;
+    color: #52090e;
+    font-family: "Montserrat", sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+
+/* URGENCY */
+
+.urgency {
+    padding: 7px 13px;
+    border-radius: 20px;
+    font-family: "Montserrat", sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.critical {
+    background-color: #750c13;
+    color: #ffffff;
+}
+
+.urgent {
+    background-color: #a92f13;
+    color: #fffffe;
+}
+
+.moderate {
+    background-color: #d45353;
+    color: #ffffff;
+}
+
+
+/* PATIENT NAME */
+
+.requests-card h3 {
+    margin: 0 0 12px;
+    color: #fff1f2;
+    font-family: "Montserrat", sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+
+/* HOSPITAL */
+
+.hospital {
+    margin: 0 0 10px;
+    color: #cbbfc0;
+    font-family: "Montserrat", sans-serif;
+    font-size: 14px;
+}
+
+.hospital i {
+    margin-right: 7px;
+    color: #ff5475;
+}
+
+
+/* DETAILS */
+
+.details {
+    margin: 0;
+    color: #8f8586;
+    font-family: "Montserrat", sans-serif;
+    font-size: 14px;
+}
+
+
+/* LINK */
+
+.view-request {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid #332d2d;
+    color: #ff5475;
+    font-family: "Montserrat", sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.view-request:hover {
+    color: white;
+}

@@ -1,0 +1,658 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --bg: #170002;
+    --nav: #210205;
+    --card: #65070e;
+    --card-dark: #4f050b;
+    --red: #c90d35;
+    --pink: #ff2359;
+    --light: #fff9fa;
+    --muted: #c6aeb2;
+    --line: rgba(255, 255, 255, 0.13);
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: var(--bg);
+    color: white;
+    min-width: 320px;
+}
+
+
+/* HOSPITAL MAIN */
+.hospital-main {
+    height: 450px;
+    position: relative;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-image: url("images/hospital.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+.hospital-main::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: #150406;
+    z-index: 1;
+}
+
+.hospital-main-content {
+    position: relative;
+    z-index: 2;
+    width: min(1000px, 90%);
+    text-align: center;
+    margin-top: -8px;
+    color: #ffe9eb;
+}
+
+.hospital-main h1 {
+    font-size: clamp(48px, 5vw, 76px);
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -2px;
+    
+}
+
+.hospital-main p {
+    font-size: 20px;
+    line-height: 1.5;
+    margin: 18px 0 30px;
+    color: #fff;
+}
+
+/* FILTER BAR */
+.filter-bar {
+    margin: 0 auto;
+    width: min(750px, 100%);
+    min-height: 68px;
+    padding: 10px;
+    border-radius: 40px;
+    background: #d9c4c5;
+    border: 1px solid #c4143c;
+    display: flex;
+    gap: 10px;
+}
+
+.filter-dropdown {
+    position: relative;
+    flex: 1;
+}
+
+.filter-dropdown summary {
+    list-style: none;
+    height: 48px;
+    padding: 0 20px;
+    border-radius: 28px;
+    background: #52090e;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 17px;
+    color: white;
+}
+
+.filter-dropdown summary::-webkit-details-marker {
+    display: none;
+}
+
+.filter-dropdown summary .chevron {
+    margin-left: auto;
+    font-size: 20px;
+}
+
+.filter-icon {
+    color: #ff99ad;
+    font-size: 30px;
+}
+
+.blood-filter summary {
+    justify-content: center;
+}
+
+.blood-filter summary strong {
+    font-weight: 700;
+}
+
+.dropdown-menu {
+    position: absolute;
+    z-index: 100;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    padding: 7px;
+    background: #52090e;
+    border: 1px solid #a50d2c;
+    border-radius: 14px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.dropdown-menu button {
+    width: 100%;
+    padding: 10px 12px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: white;
+    text-align: left;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.dropdown-menu button:hover {
+    background: #78101d;
+}
+
+.find-btn {
+    min-width: 170px;
+    height: 48px;
+    border: 0;
+    border-radius: 28px;
+    background: white;
+    color: #5a0710;
+    font-weight: 800;
+    font-size: 13px;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.find-btn:hover {
+    transform: translateY(-1px);
+    background: #ffecef;
+}
+
+.find-btn span {
+    margin-left: 5px;
+}
+
+/* HOSPITAL SECTION */
+.hospital-section {
+    width: min(1520px, 90%);
+    margin: 0 auto;
+    padding: 42px 0 70px;
+}
+
+.section-top {
+    min-height: 70px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.section-title h2 {
+    font-size: 45px;
+    line-height: 1;
+}
+
+.facility-count {
+    color: #ff718f;
+    border: 1px solid #a90932;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 15px;
+}
+
+.section-controls {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+/* SEARCH */
+.search-box {
+    width: 320px;
+    height: 44px;
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid #4a3c3e;
+    border-radius: 25px;
+    background: #171617;
+    color: #b8a8aa;
+}
+
+.search-box span {
+    font-size: 25px;
+}
+
+.search-box input {
+    width: 100%;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: white;
+    font-size: 16px;
+}
+
+.search-box input::placeholder {
+    color: #9e9294;
+}
+
+/* SORT */
+.sort-dropdown {
+    position: relative;
+}
+
+.sort-dropdown summary {
+    height: 44px;
+    padding: 0 13px;
+    border-radius: 8px;
+    background: #2a2526;
+    color: white;
+
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    list-style: none;
+    cursor: pointer;
+
+    min-width: 105px;
+    font-size: 15px;
+}
+
+.sort-dropdown summary::-webkit-details-marker {
+    display: none;
+}
+
+.sort-icon {
+    font-size: 20px;
+}
+
+.small-chevron {
+    margin-left: auto;
+    position: relative;
+    top: -2px;
+    font-size: 20px;
+
+}
+
+
+/* THE DROPDOWN BOX */
+.sort-menu {
+    position: absolute;
+
+    top: calc(100% + 8px);
+    right: 0;
+
+    width: 165px;
+    padding: 7px;
+
+    background: #241416;
+    border: 1px solid #5d383d;
+    border-radius: 12px;
+
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.45);
+
+    z-index: 100;
+
+    /* FORCE ITEMS TO STACK VERTICALLY */
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+
+/* EACH SORT OPTION */
+.sort-menu button {
+    width: 100%;
+    min-height: 40px;
+
+    padding: 10px 12px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: transparent;
+    color: white;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    cursor: pointer;
+    font-size: 14px;
+    text-align: left;
+}
+
+
+/* HOVER */
+.sort-menu button:hover {
+    background: #680914;
+}
+
+/* LIST / MAP */
+.view-toggle {
+    height: 44px;
+    padding: 5px;
+    display: flex;
+    gap: 3px;
+    background: #2a2526;
+    border-radius: 8px;
+}
+
+.view-toggle button {
+    border: 0;
+    border-radius: 6px;
+    padding: 0 12px;
+    background: transparent;
+    color: #a99d9f;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.view-toggle .view-active {
+    background: #790b18;
+    color: white;
+    font-weight: 700;
+}
+
+/* CARDS */
+.hospital-grid {
+    padding-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 30px;
+}
+
+.hospital-card {
+    overflow: hidden;
+    border: 1px solid #8e1628;
+    border-radius: 20px;
+    background: var(--card);
+}
+
+.hospital-image {
+    height: 260px;
+    position: relative;
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+
+.hospital-image {
+    height: 260px;
+    position: relative;
+    overflow: hidden;
+    background: #65070e;
+}
+
+.hospital-image img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+}
+
+.hospital-image::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.08);
+    pointer-events: none;
+}
+
+.district-tag {
+    position: absolute;
+    z-index: 2;
+    top: 15px;
+    right: 15px;
+
+    padding: 7px 13px;
+    border-radius: 20px;
+
+    background: #292527;
+    color: #ffd9de;
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.card-content {
+    padding: 25px 25px 24px;
+}
+
+.card-content h3 {
+    min-height: 58px;
+    font-size: 24px;
+    line-height: 1.25;
+    margin-bottom: 13px;
+}
+
+.info {
+    display: flex;
+    gap: 9px;
+    color: #f2dfe2;
+    font-size: 15px;
+    line-height: 1.45;
+    margin: 10px 0;
+}
+
+.info span {
+    color: #ff5879;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.card-bottom {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255,255,255,.14);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.card-bottom strong {
+    font-size: 14px;
+}
+
+.card-bottom strong b {
+    color: white;
+}
+
+.card-bottom button {
+    min-width: 118px;
+    height: 42px;
+    border: 1px solid #ba1740;
+    border-radius: 9px;
+    background: transparent;
+    color: white;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.card-bottom button:hover {
+    background: #7c0b19;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1100px) {
+    .nav-links {
+        gap: 22px;
+    }
+
+    .nav-links a {
+        font-size: 18px;
+    }
+
+    .hospital-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .hospital-card:last-child {
+        grid-column: 1 / -1;
+        max-width: calc(50% - 15px);
+    }
+
+    .search-box {
+        width: 250px;
+    }
+}
+
+@media (max-width: 800px) {
+    .navbar {
+        height: 78px;
+        padding: 0 22px;
+    }
+
+    .logo {
+        font-size: 27px;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .hero {
+        height: auto;
+        min-height: 420px;
+        padding: 45px 0;
+    }
+
+    .hero h1 {
+        font-size: 48px;
+    }
+
+    .hero p {
+        font-size: 16px;
+    }
+
+    .desktop-only {
+        display: none;
+    }
+
+    .filter-bar {
+        flex-direction: column;
+        border-radius: 20px;
+        width: min(430px, 90%);
+    }
+
+    .filter-dropdown summary,
+    .find-btn {
+        width: 100%;
+    }
+
+    .hospital-section {
+        width: 92%;
+        padding-top: 30px;
+    }
+
+    .section-top {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .section-controls {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .search-box {
+        flex: 1;
+        min-width: 220px;
+    }
+
+    .hospital-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hospital-card:last-child {
+        grid-column: auto;
+        max-width: none;
+    }
+}
+
+@media (max-width: 520px) {
+    .nav-actions {
+        gap: 7px;
+    }
+
+    .theme-btn,
+    .profile-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 22px;
+    }
+
+    .hero h1 {
+        font-size: 39px;
+        letter-spacing: -1px;
+    }
+
+    .hero p {
+        margin-bottom: 24px;
+    }
+
+    .section-title h2 {
+        font-size: 36px;
+    }
+
+    .facility-count {
+        font-size: 12px;
+        padding: 5px 9px;
+    }
+
+    .section-controls {
+        display: grid;
+        grid-template-columns: 1fr auto;
+    }
+
+    .search-box {
+        grid-column: 1 / -1;
+        width: 100%;
+    }
+
+    .view-toggle {
+        justify-self: end;
+    }
+
+    .hospital-image {
+        height: 220px;
+    }
+
+    .card-content {
+        padding: 20px;
+    }
+
+    .card-content h3 {
+        font-size: 21px;
+    }
+
+    .card-bottom {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .card-bottom button {
+        width: 100%;
+    }
+}

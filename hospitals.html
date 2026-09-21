@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BloodSync</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/nav.css">
+    <link rel="stylesheet" href="css/mainpage.css">
+    <link rel="stylesheet" href="css/urgentbloodreq.css">
+    <link rel="stylesheet" href="css/features.css">
+    <link rel="stylesheet" href="css/donorscreening.css">
+    <link rel="stylesheet" href="css/requests.css">
+    <link rel="stylesheet" href="css/donationevent.css">
+    <link rel="stylesheet" href="css/hospital.css">
+
+
+    
+</head>
+<body>
+    
+    <!-- Header -->
+
+    <section  class="header">
+        <nav>
+            <a href="main.html" class="logo"><img src="images/logo.png" alt="Logo"></a>
+
+             <!-- Navigation Links -->
+
+            <div class="nav-links" id="navLinks">
+                <ul>
+                    <li><a href="main.html">Home</a></li>
+                    <li><a href="hospitals.html">Hospitals</a></li>
+                    <li><a href="requests.html">Requests</a></li>
+                    <li><a href="events.html">Events</a></li>
+                </ul>
+            </div>
+
+            <!-- SIGN IN ICON -->
+            <a href="signin.html" class="sign-in"><i class="fa fa-user"></i></a>
+
+        <!-- HAMBURGER BUTTON -->
+
+        <button class="menu-button" id="menuButton">
+            <i class="fa fa-bars"></i>
+        </button>
+
+        </nav>
+    </section>
+
+
+    <!-- HOSPITAL MAIN -->
+    <section class="hospital-main">
+        <div class="hospital-main-overlay"></div>
+
+        <div class="hospital-main-content">
+            <h1>FIND A HOSPITAL</h1>
+            <p>
+                Explore accredited blood donation banks, emergency trauma facilities,
+                and<br class="desktop-only">
+                current supply needs across Cavite District 1.
+            </p>
+
+            <div class="filter-bar">
+
+                <!-- LOCATION FILTER -->
+                <details class="filter-dropdown">
+                    <summary>
+                        <span class="filter-icon">⌖</span>
+                        <span>All Locations</span>
+                        <span class="small-chevron">⌄</span>
+                    </summary>
+                    <div class="dropdown-menu">
+                        <button>All Locations</button>
+                        <button>Cavite City</button>
+                        <button>Kawit</button>
+                        <button>Rosario</button>
+                        <button>General Trias</button>
+                    </div>
+                </details>
+
+                <!-- BLOOD TYPE FILTER -->
+                <details class="filter-dropdown blood-filter">
+                    <summary>
+                        <span>Blood Needed:</span>
+                        <strong>All Types</strong>
+                        <span class="small-chevron">⌄</span>
+                    </summary>
+                    <div class="dropdown-menu">
+                        <button>All Types</button>
+                        <button>A+</button>
+                        <button>A−</button>
+                        <button>B+</button>
+                        <button>B−</button>
+                        <button>AB+</button>
+                        <button>AB−</button>
+                        <button>O+</button>
+                        <button>O−</button>
+                    </div>
+                </details>
+
+                <button class="find-btn" type="button">
+                    FIND HOSPITAL
+                    <span>→</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOSPITAL LIST -->
+    <main class="hospital-section">
+
+        <div class="section-top">
+            <div class="section-title">
+                <h2>ALL</h2>
+                <span class="facility-count">3 Facilities Found</span>
+            </div>
+
+            <div class="section-controls">
+
+                <!-- SEARCH -->
+                <label class="search-box">
+                    <span>⌕</span>
+                    <input type="search" placeholder="Search hospital or street...">
+                </label>
+
+                <!-- SORT NOW BESIDE LIST -->
+                <details class="sort-dropdown">
+                    <summary>
+                        <span class="sort-icon">⇅</span>
+                        <span>Sort</span>
+                        <span class="small-chevron">⌄</span>
+                    </summary>
+
+                    <div class="sort-menu">
+                        <button>
+                            <span>Name</span>
+                            <span>↕</span>
+                        </button>
+                        <button>
+                            <span>Urgency</span>
+                            <span>!</span>
+                        </button>
+                        <button>
+                            <span>Distance</span>
+                            <span>⌖</span>
+                        </button>
+                    </div>
+                </details>
+
+                <!-- VIEW TOGGLE -->
+                <div class="view-toggle">
+                    <button class="view-active">▦ <span>List</span></button>
+                    <button>♧ <span>Map</span></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- HOSPITAL CARDS -->
+        <div class="hospital-grid">
+
+            <article class="hospital-card">
+                <div class="hospital-image">
+                    <img src="images/calungsod.jpg" alt="Calungsod Hospital">
+                    <span class="district-tag">Cavite District 1</span>
+                </div>
+
+                <div class="card-content">
+                    <h3>San Pedro Calungsod Medical Center</h3>
+
+                    <p class="info">
+                        <span>⌖</span>
+                        Kalayaan Rd, Magdalo (Putol), Kawit, 4104 Cavite
+                    </p>
+
+                    <p class="info">
+                        <span>⌕</span>
+                        (046) 458 1176
+                    </p>
+
+                    <div class="card-bottom">
+                        <strong>BLOOD NEEDED: <b>AB+ | B−</b></strong>
+                        <button>DONATE</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="hospital-card">
+                <div  class="hospital-image">
+                    <img src="images/binakayan.jpg" alt="Binakayan Hospital">
+                    <span class="district-tag">Cavite District 1</span>
+                </div>
+
+                <div class="card-content">
+                    <h3>Binakayan Hospital and Medical Center, Inc.</h3>
+
+                    <p class="info">
+                        <span>⌖</span>
+                        175 Covelandia Road, Barangay Balsahan, 
+                        Bisita, Binakayan, Kawit, Cavite, 4104
+                    </p>
+
+                    <p class="info">
+                        <span>⌕</span>
+                        (046) 516-0500 / 0917-110-261
+                    </p>
+
+                    <div class="card-bottom">
+                        <strong>BLOOD NEEDED: <b>AB+ | B−</b></strong>
+                        <button>DONATE</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="hospital-card">
+                <div  class="hospital-image">
+                    <img src="images/rosario.jpg" alt="Rosario Hospital">
+                    <span class="district-tag">Cavite District 1</span>
+                </div>
+
+                <div class="card-content">
+                    <h3>St. Martin Maternity & Pediatric Hospital</h3>
+
+                    <p class="info">
+                        <span>⌖</span>
+                        Marseilla, Salcedo 2, Noveleta, 4105 Cavite
+                    </p>
+
+                    <p class="info">
+                        <span>⌕</span>
+                        (046) 458 1176
+                    </p>
+
+                    <div class="card-bottom">
+                        <strong>BLOOD NEEDED: <b>AB+ | B−</b></strong>
+                        <button>DONATE</button>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </main>
+
+
+    <!--- FOOTER -->
+
+    <footer class="footer">
+
+        <div class="footer-line"></div>
+
+        <div class="footer-container">
+
+            <!-- COLUMN 1 -->
+            <div class="footer-column">
+                <img src="images/logo.png" alt="Logo" class="footer-logo">
+
+                <p>
+                    Localized blood donation coordination platform in District 1, Cavite. Syncing eligible donors with verified urgent 
+                    requests and accredited medical facilities.
+                </p>
+            </div>
+
+
+            <!-- COLUMN 2 -->
+            <div class="footer-column">
+                <h3>QUICK LINKS</h3>
+
+                <a href="main.html">Home</a>
+                <a href="hospitals.html">Hospitals</a>
+                <a href="requests.html">Requests</a>
+                <a href="events.html">Events</a>
+            </div>
+
+
+            <!-- COLUMN 3 -->
+            <div class="footer-column">
+                <h3>SERVICE COVERAGE</h3>
+
+                <a><i class="fa fa-map-marker"></i>  Kawit, Cavite</a>
+                <a><i class="fa fa-map-marker"></i>  Noveleta, Cavite</a>
+                <a><i class="fa fa-map-marker"></i>  Rosario, Cavite</a>
+                <a><i class="fa fa-map-marker"></i>  Cavite City, Cavite</a>
+            </div>
+
+
+            <!-- COLUMN 4 -->
+            <div class="footer-column">
+                <h3>CONTACT US</h3>
+
+                <p>Cavite District 1</p>
+                <p>Email: bloodsync@gmail.com</p>
+                <p>Phone: +639 123456789</p>
+
+                <div class="social-icons">
+                    <a href="#"><i class="fa fa-facebook"></i></a>
+                    <a href="#"><i class="fa fa-instagram"></i></a>
+                    <a href="#"><i class="fa fa-envelope"></i></a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2026 BloodSync. All rights reserved.</p>
+        </div>
+
+    </footer>
+
+    <script src="script.js"></script>
+
+</body>
+</html>

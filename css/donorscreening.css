@@ -1,0 +1,380 @@
+/*--- DONOR SCREENING ---*/
+
+.screening-overlay {
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.75);
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    z-index: 2000;
+}
+
+.screening-overlay.active {
+    display: flex;
+}
+
+
+/* MODAL */
+
+.screening-modal {
+    position: relative;
+
+    width: 100%;
+    max-width: 720px;
+
+    max-height: 95vh;
+
+    overflow-y: auto;
+
+    background-color: #1d1a1a;
+
+    border: 1px solid #3b3535;
+
+    border-radius: 28px;
+
+    padding: 40px;
+}
+
+
+/* CLOSE BUTTON */
+
+.close-screening {
+    position: absolute;
+
+    top: 15px;
+    right: 20px;
+
+    background: none;
+    border: none;
+
+    color: #aaa;
+
+    font-size: 32px;
+
+    cursor: pointer;
+
+    line-height: 1;
+}
+
+.close-screening:hover {
+    color: white;
+}
+
+
+/* HEADER */
+
+.screening-header {
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+
+    margin-bottom: 35px;
+}
+
+.screening-icon {
+    width: 60px;
+    height: 60px;
+
+    background-color: #50001d;
+
+    border-radius: 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+}
+
+.screening-icon i {
+    color: #ff5b7d;
+    font-size: 28px;
+}
+
+.screening-header h2 {
+    font-family: "Montserrat", sans-serif;
+
+    color: white;
+
+    font-size: 28px;
+
+    margin-bottom: 5px;
+}
+
+.screening-header p {
+    font-family: "Montserrat", sans-serif;
+
+    color: #aaa;
+
+    font-size: 15px;
+}
+
+
+/* FORM */
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+
+    font-family: "Montserrat", sans-serif;
+
+    color: white;
+
+    font-size: 17px;
+
+    font-weight: 600;
+
+    margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+
+    height: 52px;
+
+    padding: 0 17px;
+
+    background-color: #282424;
+
+    border: 1px solid #4b4545;
+
+    border-radius: 15px;
+
+    color: white;
+
+    font-family: "Montserrat", sans-serif;
+
+    font-size: 16px;
+
+    outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #ff5475;
+}
+
+.form-group input::placeholder {
+    color: #888;
+}
+
+.form-group small {
+    display: block;
+
+    margin-top: 7px;
+
+    color: #8f8787;
+
+    font-family: "Montserrat", sans-serif;
+
+    font-size: 12px;
+
+    line-height: 1.4;
+}
+
+
+/* THREE COLUMN ROW */
+
+.form-row {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr 1fr;
+
+    gap: 15px;
+}
+
+
+/* CHECKLIST */
+
+.checklist {
+    background-color: #252121;
+
+    border: 1px solid #403939;
+
+    border-radius: 16px;
+
+    padding: 20px;
+
+    margin-top: 10px;
+
+    margin-bottom: 20px;
+}
+
+.checklist h3 {
+    font-family: "Montserrat", sans-serif;
+
+    color: #aaa;
+
+    font-size: 14px;
+
+    margin-bottom: 18px;
+}
+
+.check-item {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 12px;
+
+    margin-bottom: 16px;
+
+    color: white;
+
+    font-family: "Montserrat", sans-serif;
+
+    font-size: 16px;
+
+    line-height: 1.4;
+
+    cursor: pointer;
+}
+
+.check-item:last-child {
+    margin-bottom: 0;
+}
+
+.check-item input {
+    width: 20px;
+    height: 20px;
+
+    flex-shrink: 0;
+
+    accent-color: #ff5475;
+
+    cursor: pointer;
+}
+
+
+/* CALCULATE BUTTON */
+
+.calculate-btn {
+    width: 100%;
+
+    height: 60px;
+
+    border: none;
+
+    border-radius: 18px;
+
+    background-color: #72000a;
+
+    color: white;
+
+    font-family: "Montserrat", sans-serif;
+
+    font-size: 17px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.calculate-btn:hover {
+    background-color: #92000d;
+
+    transform: translateY(-2px);
+}
+
+.calculate-btn span {
+    margin-left: 10px;
+
+    font-size: 22px;
+}
+
+
+/* RESULT */
+
+.eligibility-result {
+    display: none;
+
+    margin-top: 20px;
+
+    padding: 20px;
+
+    border-radius: 15px;
+
+    font-family: "Montserrat", sans-serif;
+
+    line-height: 1.5;
+}
+
+.eligibility-result.show {
+    display: block;
+}
+
+.eligibility-result.eligible {
+    background-color: #103b29;
+    border: 1px solid #287a55;
+    color: #b9f5d7;
+}
+
+.eligibility-result.not-eligible {
+    background-color: #421416;
+    border: 1px solid #8b3035;
+    color: #ffc5c8;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 767px) {
+
+    .screening-modal {
+        padding: 25px 20px;
+
+        max-height: 90vh;
+
+        border-radius: 20px;
+    }
+
+    .screening-header {
+        align-items: flex-start;
+
+        padding-right: 25px;
+    }
+
+    .screening-icon {
+        width: 50px;
+        height: 50px;
+    }
+
+    .screening-header h2 {
+        font-size: 21px;
+    }
+
+    .screening-header p {
+        font-size: 12px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .form-group label {
+        font-size: 15px;
+    }
+
+    .form-group input,
+    .form-group select {
+        height: 48px;
+    }
+
+    .check-item {
+        font-size: 14px;
+    }
+
+}

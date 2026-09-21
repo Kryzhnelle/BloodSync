@@ -1,0 +1,470 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    width: 100%;
+    background-color: #200507;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    z-index: 1000;
+}
+
+.header {
+    width: 100%;
+    background-color: #200507;
+
+    border-bottom: 1px solid #4a292c;
+}
+
+
+body{
+    margin: 0;
+    padding: 70px 0 0 0;
+}
+.body {
+    width: 100%;
+    background-color: #451518;
+}
+
+
+
+/* --- TABLET --- */
+
+@media (min-width: 768px) and (max-width: 1023px) {
+
+    /* HEADER */
+
+    nav {
+        padding: 0 4%;
+    }
+
+    .logo {
+        left: 3%;
+    }
+
+    .logo img {
+        width: 150px;
+        margin-left: 0;
+    }
+
+    .nav-links {
+        position: static;
+        transform: none;
+        margin: auto;
+    }
+
+    .nav-links ul li {
+        margin: 0 10px;
+    }
+
+    .nav-links a {
+        font-size: 17px;
+    }
+
+    .sign-in {
+        right: 3%;
+        margin-right: 0;
+        font-size: 24px;
+    }
+
+
+    /* MAIN PAGE */
+
+    .mainpage {
+        min-height: auto;
+        flex-direction: column;
+        gap: 40px;
+        padding: 60px 6%;
+        text-align: center;
+    }
+
+    .mainpage-image {
+        width: 80%;
+        max-width: 600px;
+        height: 350px;
+    }
+
+    .mainpage-content {
+        max-width: 800px;
+    }
+
+    .mainpage-content h1 {
+        font-size: 52px;
+    }
+
+    .mainpage-content p {
+        font-size: 16px;
+    }
+
+    .mainpage-buttons {
+        justify-content: center;
+    }
+
+
+    /* URGENT SECTION */
+
+    .urgent-section {
+        padding: 60px 6%;
+    }
+
+    .urgent-container {
+        flex-direction: column;
+        padding: 30px;
+    }
+
+    .urgent-requests,
+    .urgent-image {
+        width: 100%;
+    }
+
+    .urgent-image {
+        height: 350px;
+    }
+
+
+    /* FEATURES */
+
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px;
+    }
+
+
+    /* FOOTER */
+
+    .footer-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 40px;
+    }
+}
+
+/* --- MOBILE --- */
+
+.menu-button {
+    display: none;
+}
+
+@media (max-width: 767px) {
+
+    /* HEADER */
+
+    nav {
+        height: 70px;
+        padding: 0 20px;
+    }
+
+    .logo {
+        position: absolute;
+        left: 20px;
+    }
+
+    .logo img {
+        width: 120px;
+        margin-left: 0;
+    }
+
+    .sign-in {
+        right: 65px;
+        margin-right: 0;
+        font-size: 23px;
+    }
+
+
+    /* HAMBURGER */
+
+    .menu-button {
+        display: block;
+
+        position: absolute;
+        right: 20px;
+        top: 50%;
+
+        transform: translateY(-50%);
+
+        background: none;
+        border: none;
+
+        color: white;
+        font-size: 25px;
+
+        cursor: pointer;
+        z-index: 1001;
+    }
+
+
+    /* NAVIGATION MENU */
+
+    .nav-links {
+        display: none;
+    }
+
+    .nav-links.active {
+        display: block;
+
+        position: absolute;
+        top: 70px;
+        left: 0;
+
+        width: 100%;
+
+        transform: none;
+
+        background-color: #200507;
+
+        padding: 25px 0;
+
+        z-index: 1000;
+    }
+
+    .nav-links ul {
+        display: flex;
+        flex-direction: column;
+
+        align-items: center;
+
+        gap: 20px;
+    }
+
+    .nav-links ul li {
+        display: block;
+        margin: 0;
+    }
+
+    .nav-links a {
+        font-size: 18px;
+    }
+
+
+    /* MAIN PAGE */
+
+    .mainpage {
+        min-height: auto;
+
+        flex-direction: column;
+
+        gap: 35px;
+
+        padding: 45px 20px;
+
+        text-align: center;
+    }
+
+    .mainpage-image {
+        width: 100%;
+        max-width: 500px;
+
+        height: 280px;
+    }
+
+    .mainpage-content {
+        width: 100%;
+        max-width: 500px;
+    }
+
+    .mainpage-content h1 {
+        font-size: 42px;
+    }
+
+    .mainpage-content p {
+        font-size: 15px;
+        line-height: 1.6;
+    }
+
+
+    /* BUTTONS */
+
+    .mainpage-buttons {
+        flex-direction: column;
+        width: 100%;
+        gap: 15px;
+    }
+
+    .donate-btn,
+    .request-btn {
+        width: 100%;
+        padding: 16px 20px;
+        font-size: 15px;
+    }
+
+
+    /* URGENT SECTION */
+
+    .urgent-section {
+        padding: 50px 20px;
+    }
+
+    .urgent-container {
+        flex-direction: column;
+
+        padding: 20px;
+
+        gap: 25px;
+    }
+
+    .urgent-requests {
+        width: 100%;
+        padding: 20px;
+    }
+
+    .urgent-requests h2 {
+        font-size: 20px;
+    }
+
+    .request-card {
+        gap: 15px;
+        padding: 15px;
+    }
+
+    .request-info h3 {
+        font-size: 14px;
+    }
+
+    .request-info p {
+        font-size: 12px;
+    }
+
+    .request-footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .urgent-image {
+        width: 100%;
+        height: 350px;
+    }
+
+    .image-overlay {
+        left: 25px;
+        right: 25px;
+        top: 35px;
+
+        max-width: none;
+    }
+
+    .image-overlay h2 {
+        font-size: 28px;
+    }
+
+    .image-overlay p {
+        font-size: 14px;
+    }
+
+
+    /* ABOUT */
+
+    .mainabout {
+        margin-left: 0;
+        text-align: center;
+    }
+
+    .mainabout h1 {
+        font-size: 30px;
+    }
+
+    .aboutbloodsync-container {
+        margin: 0 20px;
+        padding: 15px;
+    }
+
+    .about-BloodSync h2 {
+        font-size: 15px;
+        line-height: 1.6;
+    }
+
+
+    /* FEATURES */
+
+    .features-section {
+        padding: 50px 20px;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .feature-card {
+        padding: 25px;
+        min-height: auto;
+    }
+
+    .feature-card h3 {
+        font-size: 20px;
+    }
+
+    .feature-card p {
+        font-size: 14px;
+    }
+
+
+    /* FOOTER */
+
+    .footer {
+        padding: 40px 20px 20px;
+    }
+
+    .footer-container {
+        grid-template-columns: 1fr;
+        gap: 35px;
+    }
+
+    .footer-logo {
+        width: 130px;
+    }
+
+}
+
+
+/* ABOUT BLOODSYNC */
+
+.mainabout{
+    margin-left: 8%;
+}
+.mainabout h1{
+    display: inline block;
+    padding: 20px;
+    color: white;
+}
+
+.about-BloodSync{
+    background-color: #200507;
+}
+
+.aboutbloodsync-container{
+    max-width: 1250px;
+    margin: 0 auto;
+
+    background-color: #14090a;
+    border: 1px solid #3a2426;
+    border-radius: 20px;
+
+    padding: 10px;
+    display: flex;
+    gap: 20px;
+
+    align-items: center;
+}
+
+.about-BloodSync h2{
+    font-family: "Montserrat", sans-serif;
+    color: white;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: 400;
+
+}
+
+
+
+

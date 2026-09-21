@@ -1,0 +1,223 @@
+/* --- URGENT BLOOD REQUEST SECTION --- */
+
+.urgent-section {
+    background-color: #200507;
+    padding: 80px 10%;
+}
+
+.urgent-container {
+    max-width: 1400px;
+    margin: 0 auto;
+
+    background-color: #14090a;
+    border: 1px solid #3a2426;
+    border-radius: 28px;
+
+    padding: 40px;
+
+    display: flex;
+    gap: 40px;
+
+    align-items: center;
+}
+
+
+/*--- LEFT SIDE ---*/
+
+.urgent-requests {
+    width: 42%;
+    background-color: #350006;
+    border: 1px solid #7d1026;
+    border-radius: 20px;
+
+    padding: 30px;
+}
+
+.urgent-requests h2 {
+    font-family: "Montserrat", sans-serif;
+    color: white;
+    font-size: 24px;
+
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+
+    border-bottom: 1px solid #7d1026;
+}
+
+
+/* REQUEST CARDS */
+
+.request-card {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #6d1022;
+    border-radius: 15px;
+    background-color: #260306;
+}
+
+.blood-type {
+    position: relative;
+    width: 55px;
+    height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.blood-type i {
+    position: absolute;
+    font-size: 65px;
+    color: #c92732;
+}
+
+.blood-type span {
+    position: relative;
+    z-index: 1;
+    color: white;
+
+    font-family: "Montserrat", sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.request-info h3 {
+    font-family: "Montserrat", sans-serif;
+    color: white;
+    font-size: 17px;
+    line-height: 1.3;
+    margin-bottom: 5px;
+}
+
+.request-info p {
+    font-family: "Montserrat", sans-serif;
+    color: #e8aeb4;
+    font-size: 14px;
+}
+
+
+/* FOOTER */
+
+.request-footer {
+    border-top: 1px solid #7d1026;
+    padding-top: 22px;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.request-footer span {
+    color: #e8aeb4;
+    font-family: "Montserrat", sans-serif;
+    font-size: 12px;
+}
+
+.request-footer a {
+    color: white;
+    font-family: "Montserrat", sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+
+/*--- RIGHT SIDE IMAGE ---*/
+
+.urgent-image {
+    width: 58%;
+    height: 400px;
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.urgent-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+
+/* DARK OVERLAY */
+
+.urgent-image::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0.65),
+        rgba(0, 0, 0, 0.15)
+    );
+}
+
+
+/* TEXT ON IMAGE */
+
+.image-overlay {
+    position: absolute;
+
+    z-index: 2;
+
+    left: 50px;
+    top: 60px;
+
+    max-width: 500px;
+}
+
+.network-label {
+    display: inline-block;
+    background-color: #d7194b;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-family: "Montserrat", sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.image-overlay h2 {
+    font-family: "Playfair Display", serif;
+    color: white;
+    font-size: 36px;
+    line-height: 1.1;
+
+    margin: 18px 0;
+}
+
+.image-overlay p {
+    font-family: "Montserrat", sans-serif;
+    color: #f4dddd;
+    font-size: 16px;
+    line-height: 1.5;
+
+    margin-bottom: 25px;
+}
+
+
+/* BUTTON */
+
+.hospital-btn {
+    display: inline-block;
+    background-color: white;
+    color: #35090d;
+    padding: 16px 25px;
+    border-radius: 30px;
+    font-family: "Montserrat", sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.hospital-btn:hover {
+    transform: translateY(-2px);
+    background-color: #f0dddd;
+}
+

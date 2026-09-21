@@ -1,0 +1,66 @@
+/*--- NAVIGATION ---*/
+
+nav {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 6%;
+    position: relative;
+}
+
+.nav-links {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.nav-links ul {
+    list-style: none;
+}
+
+.nav-links ul li {
+    display: inline-block;
+    margin: 0 20px;
+}
+
+.nav-links a {
+    font-family: "Montserrat", sans-serif;
+    color: white;
+    text-decoration: none;
+    font-size: 25px;
+}
+
+.logo img {
+    width: 200px;
+    height: auto;
+    margin-left: 30px;
+}
+
+.logo {
+    position: absolute;
+    left: 8%;
+}
+
+/* SIGN IN ICON */
+.sign-in {
+    position: absolute;
+    right: 8%;
+    top: 50%;
+    margin-right: 100px;
+    transform: translateY(-50%);
+
+    display: block;
+    color: white;
+    font-size: 30px;
+    text-decoration: none;
+    z-index: 999;
+}
+
+.sign-in i {
+    display: block;
+}
+
+.sign-in:hover {
+    color: #ddd;
+}
