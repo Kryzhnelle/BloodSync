@@ -1,0 +1,1271 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BloodSync - Blood Donation Network</title>
+    <meta name="description" content="A responsive blood donation and hospital network web platform featuring urgent blood requests, hospital directory with interactive map, donor screening, and dark mode." />
+    <meta property="og:title" content="BloodSync - Blood Donation Network" />
+    <meta property="og:description" content="A responsive blood donation and hospital network web platform featuring urgent blood requests, hospital directory with interactive map, donor screening, and dark mode." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&display=swap" rel="stylesheet" />
+
+    <!-- Leaflet Map Styles -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body class="bg-stone-50 dark:bg-[#150406] text-stone-900 dark:text-stone-100 antialiased transition-colors duration-200 selection:bg-rose-500 selection:text-white min-h-screen flex flex-col">
+
+    <!-- Top Navigation Header -->
+    <header id="main-header" class="sticky top-0 z-40 w-full bg-[#3B070B] dark:bg-[#200507] text-white shadow-md border-b border-rose-950/40 transition-colors duration-200">
+      <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+        <!-- Brand Logo -->
+        <button
+          id="nav-logo-btn"
+          data-nav-home
+          class="focus:outline-none focus:ring-2 focus:ring-rose-400 rounded-lg p-1 text-left flex items-center cursor-pointer select-none"
+          aria-label="BloodSync Homepage"
+        >
+          <div class="inline-flex items-center gap-2 sm:gap-2.5">
+            <div class="relative w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center shrink-0">
+              <svg viewBox="0 0 32 38" fill="none" class="w-full h-full drop-shadow-sm filter">
+                <defs>
+                  <linearGradient id="bloodDropGrad" x1="16" y1="2" x2="16" y2="36" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#EF4444" />
+                    <stop offset="45%" stop-color="#DC2626" />
+                    <stop offset="100%" stop-color="#991B1B" />
+                  </linearGradient>
+                  <linearGradient id="highlightGrad" x1="10" y1="8" x2="14" y2="24" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.75" />
+                    <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
+                  </linearGradient>
+                </defs>
+                <path d="M16 2.5C16 2.5 5 18 5 25.5C5 31.5 9.9 36 16 36C22.1 36 27 31.5 27 25.5C27 18 16 2.5 16 2.5Z" fill="url(#bloodDropGrad)" />
+                <path d="M12 14C9.5 19 8.8 23 10 27C8 24 8 20.5 11 15.5C11.6 14.5 12.3 13.5 13 12.5C12.6 13 12.3 13.5 12 14Z" fill="url(#highlightGrad)" />
+              </svg>
+            </div>
+            <span class="font-bold tracking-tight text-white text-xl sm:text-2xl lg:text-3xl">
+              Blood<span class="text-rose-600 dark:text-rose-500 font-extrabold">Sync</span>
+            </span>
+          </div>
+        </button>
+
+        <!-- Desktop & Tablet Navigation Links -->
+        <nav id="desktop-nav" class="hidden md:flex items-center space-x-4 lg:space-x-8">
+          <button
+            id="nav-link-home"
+            data-tab="home"
+            class="text-sm lg:text-base font-semibold transition-all duration-150 py-1 relative text-white font-bold cursor-pointer"
+          >
+            Home
+            <span class="nav-indicator absolute bottom-0 left-0 right-0 h-0.5 bg-white rounded-full transition-all"></span>
+          </button>
+          <button
+            id="nav-link-hospitals"
+            data-tab="hospitals"
+            class="text-sm lg:text-base font-semibold transition-all duration-150 py-1 relative text-stone-300 hover:text-white cursor-pointer"
+          >
+            Hospitals
+            <span class="nav-indicator hidden absolute bottom-0 left-0 right-0 h-0.5 bg-white rounded-full transition-all"></span>
+          </button>
+          <button
+            id="nav-link-requests"
+            data-tab="requests"
+            class="text-sm lg:text-base font-semibold transition-all duration-150 py-1 relative text-stone-300 hover:text-white cursor-pointer"
+          >
+            Requests
+            <span class="nav-indicator hidden absolute bottom-0 left-0 right-0 h-0.5 bg-white rounded-full transition-all"></span>
+          </button>
+          <button
+            id="nav-link-events"
+            data-tab="events"
+            class="text-sm lg:text-base font-semibold transition-all duration-150 py-1 relative text-stone-300 hover:text-white cursor-pointer"
+          >
+            Events
+            <span class="nav-indicator hidden absolute bottom-0 left-0 right-0 h-0.5 bg-white rounded-full transition-all"></span>
+          </button>
+        </nav>
+
+        <!-- Right Actions: Theme Toggle + Profile / Login -->
+        <div class="flex items-center gap-2 sm:gap-4">
+          <!-- Theme Toggle -->
+          <button
+            id="desktop-theme-toggle"
+            class="theme-toggle-btn relative inline-flex items-center justify-center p-1.5 sm:p-2 rounded-full transition-all duration-200 bg-stone-800/80 hover:bg-stone-700 text-amber-400 border border-rose-800/60 hover:border-rose-600 shadow-inner focus:outline-none focus:ring-2 focus:ring-rose-500 cursor-pointer"
+            aria-label="Toggle theme"
+          >
+            <div class="theme-toggle-icon relative w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center">
+              <svg class="w-4 h-4 sm:w-5 sm:h-5 text-amber-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+            </div>
+          </button>
+
+          <!-- User Profile Container -->
+          <div id="user-profile-container" class="relative">
+            <!-- Dynamically populated by JS: either login button or user avatar -->
+          </div>
+
+          <!-- Mobile Menu Hamburger -->
+          <button
+            id="mobile-nav-toggle-btn"
+            class="md:hidden p-1.5 sm:p-2 rounded-lg text-white hover:bg-white/10 focus:outline-none cursor-pointer"
+            aria-label="Toggle navigation menu"
+          >
+            <svg class="w-5 h-5 sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Drawer Menu -->
+      <div id="mobile-drawer" class="hidden md:hidden bg-[#2C0508] dark:bg-[#160305] border-t border-rose-900/40 px-4 pt-3 pb-5 space-y-2">
+        <button
+          data-mobile-tab="home"
+          class="w-full text-left px-4 py-3 rounded-lg text-base font-medium flex items-center justify-between bg-white/15 text-white font-bold cursor-pointer"
+        >
+          <span>Home</span>
+          <div class="mobile-dot w-2 h-2 rounded-full bg-rose-400"></div>
+        </button>
+        <button
+          data-mobile-tab="hospitals"
+          class="w-full text-left px-4 py-3 rounded-lg text-base font-medium flex items-center justify-between text-stone-300 hover:bg-white/5 hover:text-white cursor-pointer"
+        >
+          <span>Hospitals</span>
+          <div class="mobile-dot hidden w-2 h-2 rounded-full bg-rose-400"></div>
+        </button>
+        <button
+          data-mobile-tab="requests"
+          class="w-full text-left px-4 py-3 rounded-lg text-base font-medium flex items-center justify-between text-stone-300 hover:bg-white/5 hover:text-white cursor-pointer"
+        >
+          <span>Requests</span>
+          <div class="mobile-dot hidden w-2 h-2 rounded-full bg-rose-400"></div>
+        </button>
+        <button
+          data-mobile-tab="events"
+          class="w-full text-left px-4 py-3 rounded-lg text-base font-medium flex items-center justify-between text-stone-300 hover:bg-white/5 hover:text-white cursor-pointer"
+        >
+          <span>Events</span>
+          <div class="mobile-dot hidden w-2 h-2 rounded-full bg-rose-400"></div>
+        </button>
+        <button
+          data-mobile-tab="profile"
+          class="w-full text-left px-4 py-3 rounded-lg text-base font-medium flex items-center justify-between text-stone-300 hover:bg-white/5 hover:text-white cursor-pointer"
+        >
+          <span>My Profile</span>
+          <div class="mobile-dot hidden w-2 h-2 rounded-full bg-rose-400"></div>
+        </button>
+
+        <div class="pt-2 border-t border-rose-900/50 flex items-center justify-between px-2">
+          <span class="text-sm text-stone-300">Theme</span>
+          <button class="theme-toggle-btn p-2 rounded-full bg-stone-800 text-amber-300 flex items-center gap-2 px-3 cursor-pointer">
+            <span class="theme-toggle-icon">
+              <svg class="w-4 h-4 text-amber-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/></svg>
+            </span>
+            <span class="theme-toggle-label text-xs uppercase font-bold tracking-wider">Light Mode</span>
+          </button>
+        </div>
+
+        <div id="mobile-auth-container">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Area with Views -->
+    <main class="flex-1 w-full">
+
+      <!-- ==========================================
+           VIEW 1: HOME VIEW
+           ========================================== -->
+      <div id="home-view" class="w-full flex flex-col space-y-12 pb-16">
+        <!-- Hero Section -->
+        <section id="hero-banner" class="relative overflow-hidden bg-gradient-to-br from-[#4E070D] via-[#630E14] to-[#380407] dark:from-[#250306] dark:via-[#3B070B] dark:to-[#170103] text-white py-12 md:py-20 px-4 sm:px-6 lg:px-8 shadow-xl">
+          <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.08),transparent_50%)] pointer-events-none"></div>
+
+          <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+            <!-- Left Hero Photo Card -->
+            <div class="lg:col-span-5 flex flex-col sm:flex-row lg:flex-col gap-4 items-center justify-center">
+              <div class="relative group w-full max-w-sm rounded-2xl overflow-hidden shadow-2xl border-4 border-rose-900/40 bg-stone-900">
+                <img
+                  src="https://images.unsplash.com/photo-1615461066841-6116e61058f4?auto=format&fit=crop&w=800&q=80"
+                  alt="Blood donation phlebotomy with heart stress ball"
+                  class="w-full h-64 sm:h-72 object-cover transition-transform duration-500 group-hover:scale-105 filter brightness-95"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end p-4">
+                  <div class="flex items-center gap-2 text-xs font-semibold text-rose-200">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span>Cavite Safe Blood Network Live</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Hero Copy & CTAs -->
+            <div class="lg:col-span-7 flex flex-col justify-center space-y-8 text-center lg:text-left">
+              <div class="space-y-3">
+                <h1 class="font-display italic text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-tight">
+                  Sync Blood. <br class="hidden sm:inline" />
+                  <span class="text-rose-200 font-normal">Save lives.</span>
+                </h1>
+                <p class="text-stone-300 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 font-light leading-relaxed">
+                  A localized health coordination platform bridging verified donors, emergency blood requests, and accredited hospitals across Cavite City.
+                </p>
+              </div>
+
+              <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                <button
+                  id="hero-register-donate-btn"
+                  class="w-full sm:w-auto px-8 py-4 rounded-full bg-[#FAF1F2] text-[#4E070D] hover:bg-white font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 text-center cursor-pointer"
+                >
+                  Register to Donate
+                </button>
+
+                <button
+                  id="hero-request-blood-btn"
+                  class="w-full sm:w-auto px-8 py-4 rounded-full bg-[#2A0507] hover:bg-[#1C0305] text-stone-100 font-bold text-lg border border-rose-900/60 shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 text-center cursor-pointer"
+                >
+                  Request Urgent Blood
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Active Urgent Requests Section -->
+        <section id="active-urgent-requests" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div class="bg-stone-900/5 dark:bg-stone-900/40 rounded-3xl p-6 sm:p-8 border border-stone-200 dark:border-stone-800">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+              <!-- Urgent Blood Requests Box -->
+              <div class="lg:col-span-5 bg-[#4A080C] dark:bg-[#2C0407] text-white rounded-2xl shadow-xl p-6 border border-rose-900/40">
+                <div class="flex items-center justify-between pb-4 border-b border-rose-900/50 mb-5">
+                  <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+                    <span>Active Urgent Blood Requests</span>
+                  </h2>
+                </div>
+
+                <div id="home-urgent-list" class="space-y-4">
+                  <!-- Populated dynamically by JS -->
+                </div>
+
+                <div class="mt-6 pt-4 border-t border-rose-900/50 flex items-center justify-between">
+                  <span id="home-requests-count-badge" class="text-xs text-rose-300">
+                    Total 6 open patient appeals
+                  </span>
+                  <button
+                    id="view-all-requests-btn"
+                    class="text-xs font-bold text-white hover:text-rose-200 underline flex items-center gap-1 cursor-pointer"
+                  >
+                    View All Patient Requests &rarr;
+                  </button>
+                </div>
+              </div>
+
+              <!-- Phlebotomy visual illustration -->
+              <div class="lg:col-span-7 flex flex-col justify-center">
+                <div class="relative rounded-2xl overflow-hidden shadow-lg border border-stone-200 dark:border-stone-800 h-64 sm:h-80 bg-stone-900">
+                  <img
+                    src="https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=1200&q=80"
+                    alt="Medical professional assisting donor"
+                    class="w-full h-full object-cover filter brightness-90 contrast-105"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent flex flex-col justify-center p-6 sm:p-10 text-white max-w-md">
+                    <span class="inline-block px-3 py-1 rounded-full bg-rose-600/80 text-xs font-bold uppercase tracking-wider mb-2 self-start">
+                      Cavite Safe Donor Network
+                    </span>
+                    <h3 class="text-2xl font-bold tracking-tight mb-2">
+                      Every Drop Makes a Direct Difference
+                    </h3>
+                    <p class="text-stone-300 text-sm mb-4">
+                      Patients in Cavite wait for life-saving transfusions every day. Fast-track your donation or locate accredited blood banks near you.
+                    </p>
+                    <button
+                      id="find-nearest-hospital-hero-btn"
+                      class="inline-flex items-center gap-2 text-sm font-bold bg-white text-[#4A080C] px-5 py-2.5 rounded-full hover:bg-rose-50 transition-colors self-start shadow cursor-pointer"
+                    >
+                      <span>Locate Nearest Hospital</span>
+                      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- About BloodSync Section -->
+        <section id="about-bloodsync-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div class="space-y-6">
+            <div class="text-center md:text-left space-y-2">
+              <h2 class="text-3xl font-display font-bold text-stone-900 dark:text-white tracking-tight">
+                About Bloodsync
+              </h2>
+            </div>
+
+            <div class="bg-[#46080C] dark:bg-[#2C0407] text-white p-5 sm:p-6 rounded-2xl shadow-md border border-rose-900/40">
+              <p class="text-base sm:text-lg text-rose-100 font-medium">
+                BloodSync connects blood donors, patients, and healthcare institutions across Cavite through five main features:
+              </p>
+            </div>
+
+            <!-- 5 Features Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <!-- Feature 1 -->
+              <div class="bg-white dark:bg-stone-900 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all border border-stone-200 dark:border-stone-800 flex flex-col justify-between">
+                <div class="space-y-3">
+                  <div class="w-12 h-12 rounded-xl bg-rose-100 dark:bg-rose-950/60 text-[#630E14] dark:text-rose-400 flex items-center justify-center font-bold">
+                    <svg class="w-6 h-6 stroke-[2.2]" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                  </div>
+                  <h3 class="text-lg font-bold text-stone-900 dark:text-white leading-snug">Automated Donor Screening</h3>
+                  <p class="text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
+                    Collects donor records and automatically verifies eligibility based on Philippine DOH standards (age, weight, and 8-week donation interval).
+                  </p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-stone-100 dark:border-stone-800/80">
+                  <button id="feat-action-screening" class="text-xs font-bold uppercase tracking-wider text-rose-700 dark:text-rose-400 hover:text-rose-800 dark:hover:text-rose-300 flex items-center gap-1 cursor-pointer">
+                    <span>Check Eligibility</span>
+                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Feature 2 -->
+              <div class="bg-white dark:bg-stone-900 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all border border-stone-200 dark:border-stone-800 flex flex-col justify-between">
+                <div class="space-y-3">
+                  <div class="w-12 h-12 rounded-xl bg-rose-100 dark:bg-rose-950/60 text-[#630E14] dark:text-rose-400 flex items-center justify-center font-bold">
+                    <svg class="w-6 h-6 stroke-[2.2]" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M8 10h.01"/><path d="M16 10h.01"/><path d="M8 14h.01"/><path d="M16 14h.01"/></svg>
+                  </div>
+                  <h3 class="text-lg font-bold text-stone-900 dark:text-white leading-snug">Cavite City Directory</h3>
+                  <p class="text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
+                    Lists accredited local hospitals with contact info, operating hours, and municipality-based location filtering across Cavite.
+                  </p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-stone-100 dark:border-stone-800/80">
+                  <button id="feat-action-hospitals" class="text-xs font-bold uppercase tracking-wider text-rose-700 dark:text-rose-400 hover:text-rose-800 dark:hover:text-rose-300 flex items-center gap-1 cursor-pointer">
+                    <span>Find Hospitals</span>
+                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Feature 3 -->
+              <div class="bg-white dark:bg-stone-900 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all border border-stone-200 dark:border-stone-800 flex flex-col justify-between">
+                <div class="space-y-3">
+                  <div class="w-12 h-12 rounded-xl bg-rose-100 dark:bg-rose-950/60 text-[#630E14] dark:text-rose-400 flex items-center justify-center font-bold">
+                    <svg class="w-6 h-6 stroke-[2.2]" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                  </div>
+                  <h3 class="text-lg font-bold text-stone-900 dark:text-white leading-snug">Verified Blood Request Board</h3>
+                  <p class="text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
+                    Allows users to submit emergency blood requests with a doctor's slip requirement to prevent fraud, broadcasting verified needs to the community.
+                  </p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-stone-100 dark:border-stone-800/80">
+                  <button id="feat-action-new-request" class="text-xs font-bold uppercase tracking-wider text-rose-700 dark:text-rose-400 hover:text-rose-800 dark:hover:text-rose-300 flex items-center gap-1 cursor-pointer">
+                    <span>Post Request</span>
+                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Feature 4 -->
+              <div class="bg-white dark:bg-stone-900 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all border border-stone-200 dark:border-stone-800 flex flex-col justify-between">
+                <div class="space-y-3">
+                  <div class="w-12 h-12 rounded-xl bg-rose-100 dark:bg-rose-950/60 text-[#630E14] dark:text-rose-400 flex items-center justify-center font-bold">
+                    <svg class="w-6 h-6 stroke-[2.2]" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  </div>
+                  <h3 class="text-lg font-bold text-stone-900 dark:text-white leading-snug">Donation Drive Booking</h3>
+                  <p class="text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
+                    Displays scheduled mobile blood drives and registration links that enables donors to pre-book time slots to reduce waiting times.
+                  </p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-stone-100 dark:border-stone-800/80">
+                  <button id="feat-action-events" class="text-xs font-bold uppercase tracking-wider text-rose-700 dark:text-rose-400 hover:text-rose-800 dark:hover:text-rose-300 flex items-center gap-1 cursor-pointer">
+                    <span>View Drives</span>
+                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Feature 5 -->
+              <div class="bg-white dark:bg-stone-900 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all border border-stone-200 dark:border-stone-800 flex flex-col justify-between">
+                <div class="space-y-3">
+                  <div class="w-12 h-12 rounded-xl bg-rose-100 dark:bg-rose-950/60 text-[#630E14] dark:text-rose-400 flex items-center justify-center font-bold">
+                    <svg class="w-6 h-6 stroke-[2.2]" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                  </div>
+                  <h3 class="text-lg font-bold text-stone-900 dark:text-white leading-snug">Role-Based Portals</h3>
+                  <p class="text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
+                    Dedicated user dashboards for Donors, Patients, Hospital Personnel, and Admins to manage profiles, requests, and system security.
+                  </p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-stone-100 dark:border-stone-800/80">
+                  <button id="feat-action-requests" class="text-xs font-bold uppercase tracking-wider text-rose-700 dark:text-rose-400 hover:text-rose-800 dark:hover:text-rose-300 flex items-center gap-1 cursor-pointer">
+                    <span>View Patients</span>
+                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+           VIEW 2: HOSPITALS VIEW
+           ========================================== -->
+      <div id="hospitals-view" class="hidden-view w-full flex flex-col space-y-8 pb-16">
+        <!-- Hero Header -->
+        <section id="hospitals-hero" class="relative overflow-hidden bg-stone-900 text-white min-h-[200px] sm:min-h-[260px] flex items-center justify-center py-10 px-4">
+          <img
+            src="https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1600&q=80"
+            alt="Modern hospital exterior"
+            class="absolute inset-0 w-full h-full object-cover filter brightness-[0.45] contrast-110"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30"></div>
+
+          <div class="relative z-10 max-w-4xl mx-auto text-center space-y-4">
+            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight text-white drop-shadow-md">
+              FIND A HOSPITAL
+            </h1>
+            <p class="text-stone-200 text-sm sm:text-base font-light max-w-xl mx-auto">
+              Explore accredited blood donation banks, emergency trauma facilities, and current supply needs across Cavite.
+            </p>
+
+            <!-- Filter Bar Pill -->
+            <div class="pt-2">
+              <div
+                id="hospitals-filter-bar"
+                class="inline-flex flex-wrap items-center justify-center gap-2 p-2 sm:p-2.5 rounded-full bg-[#52090E] dark:bg-[#340508] border border-rose-900/60 shadow-2xl max-w-3xl text-white"
+              >
+                <div class="hidden sm:block w-px h-6 bg-rose-800/60"></div>
+
+                <!-- Blood Needed Select -->
+                <div class="relative flex items-center px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/15 transition-colors">
+                  <span class="text-xs sm:text-sm text-rose-200 mr-1.5">Blood Needed:</span>
+                  <select
+                    id="filter-blood-select"
+                    class="bg-transparent text-xs sm:text-sm font-bold focus:outline-none cursor-pointer pr-4 appearance-none text-rose-200"
+                    aria-label="Filter by Blood Type"
+                  >
+                    <option value="All" class="bg-stone-900 text-white">All Types</option>
+                    <option value="A+" class="bg-stone-900 text-white">A+</option>
+                    <option value="A-" class="bg-stone-900 text-white">A-</option>
+                    <option value="B+" class="bg-stone-900 text-white">B+</option>
+                    <option value="B-" class="bg-stone-900 text-white">B-</option>
+                    <option value="AB+" class="bg-stone-900 text-white">AB+</option>
+                    <option value="AB-" class="bg-stone-900 text-white">AB-</option>
+                    <option value="O+" class="bg-stone-900 text-white">O+</option>
+                    <option value="O-" class="bg-stone-900 text-white">O-</option>
+                  </select>
+                  <svg class="w-3.5 h-3.5 text-rose-300 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+                </div>
+
+                <div class="hidden sm:block w-px h-6 bg-rose-800/60"></div>
+
+                <!-- Sort button -->
+                <button
+                  id="filter-sort-btn"
+                  class="px-4 py-1.5 rounded-full bg-white text-[#52090E] hover:bg-rose-100 font-bold text-xs sm:text-sm transition-all shadow hover:shadow-md cursor-pointer"
+                >
+                  Sort: NAME &rarr;
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Main Hospitals Listing -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pb-4 border-b border-stone-200 dark:border-stone-800">
+            <div class="flex items-center gap-3">
+              <h2 class="text-3xl sm:text-4xl font-black tracking-tight text-stone-900 dark:text-white uppercase font-sans">
+                ALL
+              </h2>
+              <span id="hospitals-count" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 border border-rose-200 dark:border-rose-900">
+                5 Facilities Found
+              </span>
+            </div>
+
+            <div class="flex items-center gap-3 w-full sm:w-auto">
+              <!-- Search -->
+              <div class="relative flex-1 sm:w-64">
+                <svg class="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                <input
+                  type="text"
+                  id="hospitals-search-input"
+                  placeholder="Search hospital or street..."
+                  class="w-full pl-9 pr-3 py-1.5 text-xs sm:text-sm rounded-full bg-white dark:bg-stone-900 border border-stone-300 dark:border-stone-700 text-stone-900 dark:text-stone-100 focus:outline-none focus:ring-2 focus:ring-rose-500"
+                />
+              </div>
+
+              <!-- View Switch -->
+              <div class="inline-flex rounded-lg p-1 bg-stone-200 dark:bg-stone-800 shrink-0">
+                <button
+                  id="view-grid-btn"
+                  class="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition-all bg-[#52090E] text-white shadow-sm cursor-pointer"
+                  aria-label="Grid list view"
+                >
+                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+                  <span class="hidden sm:inline">List</span>
+                </button>
+                <button
+                  id="view-map-btn"
+                  class="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition-all text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white cursor-pointer"
+                  aria-label="Interactive map view"
+                >
+                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg>
+                  <span class="hidden sm:inline">Map</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hospitals Grid View -->
+          <div id="hospitals-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-4">
+            <!-- Dynamically populated by JS -->
+          </div>
+
+          <!-- Hospitals Interactive Map View (Leaflet.js) -->
+          <div id="hospitals-map-container" class="hidden-view space-y-4 mt-4">
+            <!-- Location Selection & Distance Calculation Control Panel -->
+            <div class="p-4 sm:p-5 rounded-2xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-md space-y-3.5">
+              <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                <div class="space-y-0.5">
+                  <h3 class="text-sm sm:text-base font-bold text-stone-900 dark:text-white flex items-center gap-2">
+                    <svg class="w-4 h-4 text-rose-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3"/><path d="M12 19v3"/><path d="M2 12h3"/><path d="M19 12h3"/></svg>
+                    <span>Location Selection &amp; Hospital Distance</span>
+                  </h3>
+                  <p class="text-xs text-stone-500 dark:text-stone-400">
+                    Choose between your device GPS or manual location entry to compute real-time travel distance to accredited hospitals in Cavite.
+                  </p>
+                </div>
+
+                <!-- Live Distance Computed Badge -->
+                <div id="map-distance-badge" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rose-50 dark:bg-rose-950/70 text-rose-800 dark:text-rose-200 border border-rose-300 dark:border-rose-800 text-xs font-bold shrink-0 shadow-sm">
+                  <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
+                  <span id="map-distance-text">Select location to compute distance</span>
+                </div>
+              </div>
+
+              <!-- Location Choice Options -->
+              <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 pt-1">
+                <!-- Option 1: Use My Current Location -->
+                <div class="sm:col-span-5">
+                  <button
+                    type="button"
+                    id="map-use-current-location-btn"
+                    class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#52090E] hover:bg-[#3B070B] text-white text-xs sm:text-sm font-bold shadow transition-all cursor-pointer border border-rose-900"
+                  >
+                    <svg class="w-4 h-4 text-rose-200 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3"/><path d="M12 19v3"/><path d="M2 12h3"/><path d="M19 12h3"/></svg>
+                    <span>Use My Current Location</span>
+                  </button>
+                </div>
+
+                <!-- Option 2: Enter Location Manually -->
+                <div class="sm:col-span-7">
+                  <div class="relative flex items-center">
+                    <div class="absolute left-3 text-stone-400 pointer-events-none">
+                      <svg class="w-4 h-4 text-rose-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                    </div>
+                    <select
+                      id="map-manual-location-select"
+                      class="w-full pl-9 pr-8 py-2.5 rounded-xl bg-stone-100 dark:bg-stone-800 border border-stone-300 dark:border-stone-700 text-stone-900 dark:text-stone-100 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-rose-500 cursor-pointer appearance-none"
+                      aria-label="Enter Location Manually"
+                    >
+                      <option value="">-- Enter Location Manually (Cavite) --</option>
+                      <option value="14.4820,120.8965">Cavite City (Caridad)</option>
+                      <option value="14.4788,120.9022">Cavite City (San Roque)</option>
+                      <option value="14.4443,120.9025">Kawit, Cavite</option>
+                      <option value="14.4285,120.8803">Noveleta, Cavite</option>
+                      <option value="14.4144,120.8572">Rosario, Cavite</option>
+                      <option value="14.4624,120.9647">Bacoor City, Cavite</option>
+                      <option value="14.4296,120.9367">Imus City, Cavite</option>
+                      <option value="14.3294,120.9367">Dasmariñas City, Cavite</option>
+                      <option value="14.3833,120.8833">General Trias, Cavite</option>
+                      <option value="14.3944,120.8528">Tanza, Cavite</option>
+                    </select>
+                    <div class="absolute right-3 pointer-events-none text-stone-400">
+                      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Leaflet Map Canvas Frame -->
+            <div class="relative rounded-3xl overflow-hidden shadow-2xl border border-stone-300 dark:border-stone-800 bg-stone-100 dark:bg-stone-900">
+              <div class="relative w-full h-[540px] sm:h-[620px] overflow-hidden select-none">
+                <!-- Leaflet Map Div -->
+                <div id="leaflet-map" class="w-full h-full"></div>
+
+                <!-- Floating Top Filter Pill -->
+                <div class="absolute top-4 left-1/2 -translate-x-1/2 z-[400] w-[92%] sm:w-auto max-w-lg pointer-events-none">
+                  <div class="pointer-events-auto flex items-center justify-between sm:justify-center gap-2 px-4 py-2 rounded-full bg-[#52090E]/90 backdrop-blur-md text-white shadow-2xl border border-rose-900/60 text-xs sm:text-sm font-semibold">
+                    <span class="flex items-center gap-1 text-rose-200">
+                      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                      <span id="map-floating-location">All Locations</span>
+                    </span>
+                    <span class="text-rose-400">|</span>
+                    <span id="map-floating-blood" class="text-rose-200">All Blood</span>
+                    <span class="text-rose-400">|</span>
+                    <span class="px-2 py-0.5 rounded-full bg-white/20 text-white text-xs">Cavite Blood Network</span>
+                  </div>
+                </div>
+
+                <!-- Locate Me Geolocation Button -->
+                <button
+                  id="map-locate-me-btn"
+                  class="absolute bottom-6 right-4 sm:right-6 z-[400] p-3 rounded-full bg-white dark:bg-stone-800 text-rose-600 dark:text-rose-400 shadow-xl border border-stone-200 dark:border-stone-700 hover:scale-110 active:scale-95 transition-all cursor-pointer"
+                  title="Locate my position in Cavite"
+                  aria-label="Locate my position in Cavite"
+                >
+                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3"/><path d="M12 19v3"/><path d="M2 12h3"/><path d="M19 12h3"/></svg>
+                </button>
+
+                <!-- Bottom Drawer & Hospital Preview -->
+                <div id="map-drawer" class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/95 via-black/80 to-transparent p-4 sm:p-6 z-[400] pointer-events-none transition-transform duration-300">
+                  <div id="map-preview-container" class="max-w-3xl mx-auto space-y-3 pointer-events-auto">
+                    <!-- Dynamically populated by JS -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+           VIEW 3: HOSPITAL DETAIL VIEW
+           ========================================== -->
+      <div id="hospital-detail-view" class="hidden-view">
+        <!-- Dynamically rendered by JS -->
+      </div>
+
+      <!-- ==========================================
+           VIEW 4: REQUESTS VIEW
+           ========================================== -->
+      <div id="requests-view" class="hidden-view max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 pb-20">
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-2">
+          <div class="space-y-2">
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-[#4E080C] dark:text-rose-100 font-sans">
+              Patients in Need
+            </h1>
+            <p class="text-stone-600 dark:text-stone-300 text-base sm:text-lg font-light">
+              Real patients waiting for donors. Your blood type may be a match.
+            </p>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-3">
+            <!-- Blood Type Filter Pill -->
+            <div class="relative inline-flex items-center px-4 py-2 rounded-full bg-[#52090E] text-white shadow-lg border border-rose-900/60">
+              <span class="text-xs text-rose-300 mr-2 font-medium">Type:</span>
+              <select
+                id="filter-patient-blood-type"
+                class="bg-transparent text-sm font-black focus:outline-none cursor-pointer pr-3 appearance-none text-white"
+                aria-label="Filter patients by blood type"
+              >
+                <option value="All" class="bg-stone-900 text-white font-normal">All</option>
+                <option value="AB+" class="bg-stone-900 text-white font-normal">AB+</option>
+                <option value="A+" class="bg-stone-900 text-white font-normal">A+</option>
+                <option value="B+" class="bg-stone-900 text-white font-normal">B+</option>
+                <option value="B-" class="bg-stone-900 text-white font-normal">B-</option>
+                <option value="O+" class="bg-stone-900 text-white font-normal">O+</option>
+                <option value="O-" class="bg-stone-900 text-white font-normal">O-</option>
+                <option value="AB-" class="bg-stone-900 text-white font-normal">AB-</option>
+              </select>
+              <svg class="w-3.5 h-3.5 text-rose-300 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+            </div>
+
+            <!-- Submit Urgent Request CTA -->
+            <button
+              id="create-patient-request-btn"
+              class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-rose-700 hover:bg-rose-800 text-white font-bold text-xs sm:text-sm shadow-md transition-all hover:scale-105 cursor-pointer"
+            >
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+              <span>Submit Urgent Request</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Search & Urgency bar -->
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-sm">
+          <div class="relative w-full sm:w-80">
+            <svg class="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input
+              type="text"
+              id="requests-search-input"
+              placeholder="Search patient, hospital, condition..."
+              class="w-full pl-9 pr-3 py-2 text-xs sm:text-sm rounded-xl bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-stone-900 dark:text-stone-100 focus:outline-none focus:ring-2 focus:ring-rose-500"
+            />
+          </div>
+
+          <div class="flex items-center gap-2 overflow-x-auto w-full sm:w-auto pb-1 sm:pb-0">
+            <span class="text-xs font-semibold text-stone-500 dark:text-stone-400 whitespace-nowrap">Urgency:</span>
+            <button data-urgency-filter="All" class="px-3 py-1 rounded-full text-xs font-bold transition-all whitespace-nowrap bg-rose-900 text-white dark:bg-rose-700 cursor-pointer">All</button>
+            <button data-urgency-filter="Critical" class="px-3 py-1 rounded-full text-xs font-bold transition-all whitespace-nowrap bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 cursor-pointer">Critical</button>
+            <button data-urgency-filter="Urgent" class="px-3 py-1 rounded-full text-xs font-bold transition-all whitespace-nowrap bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 cursor-pointer">Urgent</button>
+            <button data-urgency-filter="Moderate" class="px-3 py-1 rounded-full text-xs font-bold transition-all whitespace-nowrap bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 cursor-pointer">Moderate</button>
+          </div>
+        </div>
+
+        <!-- Patients Cards Grid -->
+        <div id="patients-requests-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Dynamically populated by JS -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="requests-empty-state" class="hidden-view text-center py-16 bg-white dark:bg-stone-900 rounded-3xl border border-stone-200 dark:border-stone-800 p-8 space-y-4">
+          <svg class="w-12 h-12 text-rose-300 mx-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+          <h3 class="text-lg font-bold text-stone-800 dark:text-stone-200">No patient requests match the selected filters</h3>
+          <p class="text-xs text-stone-500 dark:text-stone-400">Try resetting your filters or submit a new urgent patient request.</p>
+          <button id="clear-requests-filters-btn" class="px-4 py-2 rounded-xl bg-stone-100 dark:bg-stone-800 text-xs font-bold text-stone-700 dark:text-stone-300 hover:bg-stone-200 cursor-pointer">Clear Filters</button>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           VIEW 5: EVENTS VIEW
+           ========================================== -->
+      <div id="events-view" class="hidden-view max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 pb-20">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div class="space-y-2">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-100 dark:bg-rose-950/70 text-rose-800 dark:text-rose-300 text-xs font-bold uppercase tracking-wider">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              <span>Donation Drive Booking</span>
+            </div>
+            <h1 class="text-4xl sm:text-5xl font-black tracking-tight text-[#4E080C] dark:text-rose-100 font-sans">
+              Mobile Blood Drives
+            </h1>
+            <p class="text-stone-600 dark:text-stone-300 text-base sm:text-lg font-light max-w-2xl">
+              Access scheduled community blood drives across Cavite and redirect directly to official drive registration links managed by healthcare workers.
+            </p>
+          </div>
+
+          <button
+            id="events-add-drive-cta-btn"
+            class="self-start sm:self-center inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#52090E] hover:bg-[#3B070B] text-white font-bold text-xs sm:text-sm shadow-md transition-all hover:scale-105 cursor-pointer whitespace-nowrap"
+          >
+            <svg class="w-4 h-4 text-rose-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/></svg>
+            <span>+ Add Event Drive</span>
+          </button>
+        </div>
+
+        <div id="events-cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Dynamically populated by JS -->
+        </div>
+      </div>
+
+      <!-- ==========================================
+           VIEW 6: USER PROFILE VIEW (Healthcare Worker / Donor Profile)
+           ========================================== -->
+      <div id="profile-view" class="hidden-view max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 pb-20">
+        <div id="profile-view-content">
+          <!-- Dynamically populated by user-profile.js: Healthcare Worker (_n.jpg) or Donor Profile -->
+        </div>
+      </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer id="main-footer" class="bg-[#240407] dark:bg-[#120204] text-stone-300 border-t border-rose-950/60 transition-colors mt-auto">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 pb-8 border-b border-rose-900/40">
+          <!-- Col 1: Brand & Slogan -->
+          <div class="space-y-4">
+            <div class="inline-flex items-center gap-2.5">
+              <div class="relative w-7 h-7 flex items-center justify-center shrink-0">
+                <svg viewBox="0 0 32 38" fill="none" class="w-full h-full drop-shadow-sm filter">
+                  <path d="M16 2.5C16 2.5 5 18 5 25.5C5 31.5 9.9 36 16 36C22.1 36 27 31.5 27 25.5C27 18 16 2.5 16 2.5Z" fill="#DC2626" />
+                </svg>
+              </div>
+              <span class="font-bold tracking-tight text-white text-2xl">
+                Blood<span class="text-rose-500 font-extrabold">Sync</span>
+              </span>
+            </div>
+            <p class="text-xs sm:text-sm text-stone-400 leading-relaxed">
+              Cavite localized blood donation coordination platform. Syncing eligible donors with verified urgent requests and accredited medical facilities.
+            </p>
+            <div class="flex items-center gap-3 pt-1">
+              <span class="text-xs text-rose-300 font-semibold">Theme:</span>
+              <button class="theme-toggle-btn p-1.5 rounded-full bg-stone-800 text-amber-300 flex items-center gap-1.5 px-3 text-xs cursor-pointer">
+                <span class="theme-toggle-icon">
+                  <svg class="w-3.5 h-3.5 text-amber-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/></svg>
+                </span>
+                <span class="theme-toggle-label uppercase font-bold text-[11px]">Light Mode</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Col 2: Navigation Links -->
+          <div class="space-y-3 text-xs sm:text-sm">
+            <h4 class="font-bold text-white uppercase tracking-wider text-xs">Navigation</h4>
+            <ul class="space-y-2">
+              <li><button data-tab="home" class="hover:text-white transition-colors cursor-pointer text-left">Home Overview</button></li>
+              <li><button data-tab="hospitals" class="hover:text-white transition-colors cursor-pointer text-left">Cavite City Hospitals &amp; Map</button></li>
+              <li><button data-tab="requests" class="hover:text-white transition-colors cursor-pointer text-left">Patients in Need &amp; Appeals</button></li>
+              <li><button data-tab="events" class="hover:text-white transition-colors cursor-pointer text-left">Mobile Blood Drives</button></li>
+            </ul>
+          </div>
+
+          <!-- Col 3: Service Coverage -->
+          <div class="space-y-3 text-xs sm:text-sm">
+            <h4 class="font-bold text-white uppercase tracking-wider text-xs">Service Coverage</h4>
+            <div class="space-y-1.5 text-stone-400">
+              <p class="flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5 text-rose-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>Cavite City District</span>
+              </p>
+            </div>
+          </div>
+
+          <!-- Col 4: Emergency Hotlines -->
+          <div class="space-y-3 text-xs sm:text-sm">
+            <h4 class="font-bold text-white uppercase tracking-wider text-xs">Emergency Assistance</h4>
+            <div class="space-y-2 text-stone-400">
+              <p class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-rose-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <span class="text-white font-mono font-bold">(046) 516-0500</span>
+              </p>
+              <p class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-rose-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <span class="text-white font-mono font-bold">0917-110-261</span>
+              </p>
+              <p class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-rose-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                <span class="text-stone-300">bloodsyncblooddonation@gmail.com</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-stone-400">
+          <p>© 2026 BloodSync Cavite. Dedicated to voluntary, safe blood donation.</p>
+          <div class="flex items-center gap-1 text-rose-300">
+            <span>Built with care for Cavite healthcare communities</span>
+            <svg class="w-3.5 h-3.5 fill-rose-500 text-rose-500 inline" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- ==========================================
+         MODALS (VANILLA DOM)
+         ========================================== -->
+
+    <!-- Modal 1: Auth Modal (Login / Register / Success) -->
+    <div id="auth-modal" class="hidden-view fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
+      <div id="auth-modal-backdrop" class="absolute inset-0"></div>
+      <div id="auth-modal-card" class="relative z-10 w-full max-w-md bg-[#580B10] text-white rounded-3xl p-7 sm:p-9 shadow-2xl border border-rose-900/60 overflow-hidden">
+        <button
+          id="auth-close-btn"
+          class="absolute top-5 right-5 p-2 rounded-full text-rose-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+          aria-label="Close dialog"
+        >
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+        <div id="auth-modal-content">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 2: View Contact Info Modal -->
+    <div id="view-contact-modal" class="hidden-view fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200">
+      <div id="contact-modal-backdrop" class="absolute inset-0"></div>
+      <div id="view-contact-modal-content" class="relative z-10 w-full max-w-lg">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <!-- Modal 3: Automated Donor Screening Modal -->
+    <div id="donor-screening-modal" class="hidden-view fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
+      <div id="screening-modal-backdrop" class="absolute inset-0"></div>
+      <div id="donor-screening-card" class="relative z-10 w-full max-w-xl bg-white dark:bg-stone-900 rounded-3xl p-6 sm:p-8 shadow-2xl border border-stone-200 dark:border-stone-800 text-stone-900 dark:text-stone-100 overflow-y-auto max-h-[90vh]">
+        <button
+          id="screening-close-btn"
+          class="absolute top-5 right-5 p-2 rounded-full text-stone-400 hover:text-stone-700 dark:hover:text-white cursor-pointer"
+          aria-label="Close modal"
+        >
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+        <div id="donor-screening-content">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 4: Submit Urgent Blood Request Modal -->
+    <div id="new-request-modal" class="hidden-view fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
+      <div id="new-request-modal-backdrop" class="absolute inset-0"></div>
+      <div class="relative z-10 w-full max-w-xl bg-white dark:bg-stone-900 rounded-3xl p-6 sm:p-8 shadow-2xl border border-stone-200 dark:border-stone-800 text-stone-900 dark:text-stone-100 overflow-y-auto max-h-[90vh]">
+        <button
+          id="new-request-close-btn"
+          class="absolute top-5 right-5 p-2 rounded-full text-stone-400 hover:text-stone-700 dark:hover:text-white cursor-pointer"
+          aria-label="Close modal"
+        >
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+
+        <div class="space-y-6">
+          <div>
+            <h3 class="text-xl sm:text-2xl font-bold tracking-tight text-[#52090E] dark:text-rose-300">
+              Submit Urgent Blood Request
+            </h3>
+            <p class="text-xs sm:text-sm text-stone-500 dark:text-stone-400 mt-1">
+              Verified Blood Request Board: Requires a doctor's requisition slip to prevent fraud and protect donor integrity.
+            </p>
+          </div>
+
+          <form id="new-request-form" class="space-y-4 text-xs sm:text-sm">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div class="sm:col-span-2">
+                <label class="block font-semibold mb-1">Patient Full Name *</label>
+                <input
+                  type="text"
+                  id="new-req-name"
+                  required
+                  placeholder="e.g. James Red"
+                  class="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 focus:ring-2 focus:ring-rose-500"
+                />
+              </div>
+
+              <div>
+                <label class="block font-semibold mb-1">Age</label>
+                <input
+                  type="number"
+                  id="new-req-age"
+                  min="1"
+                  max="120"
+                  value="30"
+                  required
+                  class="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800"
+                />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label class="block font-semibold mb-1">Blood Type Needed *</label>
+                <select
+                  id="new-req-blood-type"
+                  class="w-full px-3 py-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 font-bold text-rose-700 dark:text-rose-400"
+                >
+                  <option value="AB+">AB+</option>
+                  <option value="AB-">AB-</option>
+                  <option value="A+">A+</option>
+                  <option value="A-">A-</option>
+                  <option value="B+">B+</option>
+                  <option value="B-">B-</option>
+                  <option value="O+" selected>O+</option>
+                  <option value="O-">O-</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block font-semibold mb-1">Units Needed *</label>
+                <input
+                  type="number"
+                  id="new-req-units"
+                  min="1"
+                  max="20"
+                  value="2"
+                  required
+                  class="w-full px-3 py-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 font-bold"
+                />
+              </div>
+
+              <div>
+                <label class="block font-semibold mb-1">Urgency Level</label>
+                <select
+                  id="new-req-urgency"
+                  class="w-full px-3 py-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 font-semibold"
+                >
+                  <option value="Critical">Critical (Immediate)</option>
+                  <option value="Urgent">Urgent (Within 24h)</option>
+                  <option value="Moderate">Moderate (Within 48h)</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label class="block font-semibold mb-1">Accredited Hospital / Facility *</label>
+              <select
+                id="new-req-hospital"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 font-medium"
+              >
+                <!-- Populated by JS -->
+              </select>
+            </div>
+
+            <div>
+              <label class="block font-semibold mb-1">Medical Reason / Diagnosis</label>
+              <input
+                type="text"
+                id="new-req-condition"
+                required
+                placeholder="e.g. Major trauma post-surgery, leukemia treatment, bleeding disorder"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800"
+              />
+            </div>
+
+            <!-- Doctor's Slip Upload -->
+            <div class="space-y-1.5">
+              <label class="block font-semibold">Doctor's Requisition Slip / Hospital Form *</label>
+              <div class="relative border-2 border-dashed border-rose-300 dark:border-rose-900/80 rounded-2xl p-4 text-center bg-rose-50/50 dark:bg-rose-950/20 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors cursor-pointer">
+                <input
+                  type="file"
+                  id="new-req-slip-file"
+                  accept="image/*,.pdf"
+                  class="absolute inset-0 opacity-0 cursor-pointer"
+                />
+                <div id="new-req-slip-status" class="flex flex-col items-center gap-1.5 text-stone-600 dark:text-stone-300 pointer-events-none">
+                  <svg class="w-6 h-6 text-rose-600 dark:text-rose-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m16 16-4-4-4 4"/></svg>
+                  <p class="font-semibold text-xs">Drag &amp; drop doctor's slip or click to browse</p>
+                  <span class="text-[11px] text-stone-500">Supports JPG, PNG, PDF up to 10MB</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Appeal Expiration Date & Time (Required) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3.5 rounded-2xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/60">
+              <div>
+                <label class="block font-bold text-xs text-[#52090E] dark:text-rose-300 mb-1">
+                  Appeal Expiration Date *
+                </label>
+                <input
+                  type="date"
+                  id="new-req-expire-date"
+                  required
+                  class="w-full px-3 py-2 rounded-xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-white font-medium text-xs sm:text-sm focus:ring-2 focus:ring-rose-500"
+                />
+                <p class="text-[10px] text-stone-500 dark:text-stone-400 mt-1">Cannot be in the past</p>
+              </div>
+
+              <div>
+                <label class="block font-bold text-xs text-[#52090E] dark:text-rose-300 mb-1">
+                  Expiration Cutoff Time *
+                </label>
+                <input
+                  type="time"
+                  id="new-req-expire-time"
+                  required
+                  value="17:00"
+                  class="w-full px-3 py-2 rounded-xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-white font-medium text-xs sm:text-sm focus:ring-2 focus:ring-rose-500"
+                />
+                <p class="text-[10px] text-stone-500 dark:text-stone-400 mt-1">Auto-archives at this cutoff</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+              <div>
+                <label class="block font-semibold mb-1">Contact Phone Number (11 digits) *</label>
+                <input
+                  type="tel"
+                  id="new-req-phone"
+                  required
+                  maxlength="14"
+                  placeholder="09123456789"
+                  class="w-full px-3 py-2 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 font-mono"
+                />
+                <p class="text-[11px] text-stone-500 mt-1">11 digits, e.g. 09123456789</p>
+              </div>
+
+              <div>
+                <label class="block font-semibold mb-1">Emergency Contact / Guardian</label>
+                <input
+                  type="text"
+                  id="new-req-emergency"
+                  required
+                  placeholder="e.g. Maria Red (Spouse)"
+                  class="w-full px-3 py-2 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800"
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              class="w-full py-3.5 rounded-xl bg-[#52090E] hover:bg-[#3B070B] text-white font-extrabold text-sm shadow-md transition-all mt-2 cursor-pointer"
+            >
+              Post Verified Blood Request
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 5: Event Time Slot Booking Modal -->
+    <div id="event-booking-modal" class="hidden-view fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
+      <div id="event-booking-modal-backdrop" class="absolute inset-0"></div>
+      <div id="event-booking-modal-content" class="relative z-10 w-full max-w-md bg-white dark:bg-stone-900 rounded-3xl p-6 shadow-2xl border border-stone-200 dark:border-stone-800 text-stone-900 dark:text-stone-100 space-y-5">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <!-- Modal 6: Add Event Drive Modal (matches 2.svg) -->
+    <div id="add-event-modal" class="hidden-view fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm animate-in fade-in duration-200 overflow-y-auto">
+      <div id="add-event-modal-backdrop" class="absolute inset-0"></div>
+      <div id="add-event-modal-content" class="relative z-10 w-full max-w-lg my-8">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <!-- Modal 7: Check Certificate / Medical Slip Modal -->
+    <div id="certificate-modal" class="hidden-view fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200 overflow-y-auto">
+      <div id="certificate-modal-backdrop" class="absolute inset-0"></div>
+      <div id="certificate-modal-content" class="relative z-10 w-full max-w-xl my-8">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <!-- Modal 8: Admin Provision Healthcare Worker Account Modal -->
+    <div id="admin-provision-staff-modal" class="hidden-view fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200 overflow-y-auto">
+      <div id="admin-provision-backdrop" class="absolute inset-0"></div>
+      <div class="relative z-10 w-full max-w-xl bg-white dark:bg-stone-900 rounded-3xl p-6 sm:p-8 shadow-2xl border border-stone-200 dark:border-stone-800 text-stone-900 dark:text-stone-100 my-8">
+        <button
+          id="admin-provision-close-btn"
+          class="absolute top-5 right-5 p-2 rounded-full text-stone-400 hover:text-stone-700 dark:hover:text-white cursor-pointer"
+          aria-label="Close modal"
+        >
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+
+        <div class="space-y-5">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-rose-100 dark:bg-rose-950/70 text-rose-700 dark:text-rose-400 flex items-center justify-center font-bold">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-extrabold tracking-tight text-[#52090E] dark:text-rose-300">
+                Provision Healthcare Worker Account
+              </h3>
+              <p class="text-xs text-stone-500 dark:text-stone-400">
+                Authorized Admin only: Register accredited medical staff and issue verified credentials.
+              </p>
+            </div>
+          </div>
+
+          <div id="admin-provision-msg" class="hidden text-xs p-3 rounded-xl"></div>
+
+          <form id="admin-provision-form" class="space-y-4 text-xs sm:text-sm">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block font-semibold mb-1">Full Doctor / Staff Name *</label>
+                <input
+                  type="text"
+                  id="prov-staff-name"
+                  required
+                  placeholder="e.g. Dr. Maria Clara, MD"
+                  class="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 focus:ring-2 focus:ring-rose-500"
+                />
+              </div>
+
+              <div>
+                <label class="block font-semibold mb-1">PRC License / Staff ID *</label>
+                <input
+                  type="text"
+                  id="prov-staff-license"
+                  required
+                  placeholder="e.g. PRC-0198442"
+                  class="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 font-mono"
+                />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block font-semibold mb-1">Official Hospital Email *</label>
+                <input
+                  type="email"
+                  id="prov-staff-email"
+                  required
+                  placeholder="dr.clara@cavitemedical.ph"
+                  class="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800"
+                />
+              </div>
+
+              <div>
+                <label class="block font-semibold mb-1">Temporary Initial Password *</label>
+                <input
+                  type="password"
+                  id="prov-staff-password"
+                  required
+                  minlength="6"
+                  placeholder="At least 6 characters"
+                  class="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 font-mono"
+                />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block font-semibold mb-1">Contact Phone (11 digits) *</label>
+                <input
+                  type="tel"
+                  id="prov-staff-phone"
+                  required
+                  maxlength="14"
+                  placeholder="09185551234"
+                  class="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 font-mono"
+                />
+              </div>
+
+              <div>
+                <label class="block font-semibold mb-1">Assigned Role *</label>
+                <select
+                  id="prov-staff-role"
+                  class="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 font-bold text-rose-700 dark:text-rose-400"
+                >
+                  <option value="Healthcare Worker" selected>Healthcare Worker / Doctor</option>
+                  <option value="Hospital Admin">Hospital Admin</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label class="block font-semibold mb-1">Affiliated Hospital / Medical Center *</label>
+              <select
+                id="prov-staff-hospital"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 font-medium"
+              >
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+
+            <div class="p-3 bg-stone-100 dark:bg-stone-800/80 rounded-xl text-xs text-stone-600 dark:text-stone-300 space-y-1">
+              <p class="font-bold flex items-center gap-1.5 text-stone-800 dark:text-stone-200">
+                <svg class="w-4 h-4 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+                <span>Authorized Administrative Provisioning</span>
+              </p>
+              <p class="text-[11px] text-stone-500 dark:text-stone-400">
+                This account will be registered securely in Supabase Authentication and assigned verified medical auditing permissions.
+              </p>
+            </div>
+
+            <div class="flex items-center justify-end gap-3 pt-2">
+              <button
+                type="button"
+                id="prov-staff-cancel-btn"
+                class="px-4 py-2.5 rounded-xl border border-stone-300 dark:border-stone-700 font-bold text-xs hover:bg-stone-100 dark:hover:bg-stone-800 cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                id="prov-staff-submit-btn"
+                class="px-6 py-2.5 rounded-xl bg-[#52090E] hover:bg-[#3B070B] text-white font-extrabold text-xs shadow-md transition-all cursor-pointer"
+              >
+                Provision Account
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main JavaScript Logic -->
+    <script type="module" src="/js/script.js"></script>
+  </body>
+</html>
