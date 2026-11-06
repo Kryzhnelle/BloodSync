@@ -1,0 +1,6 @@
+{
+  "name": "BloodSync - Blood Donation Network",
+  "description": "A responsive blood donation and hospital network web platform for Cavite City (CC) featuring ID-verified donor registration, mobile drive registration, hospital directory with side-by-side search and sort, and role-based access.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
